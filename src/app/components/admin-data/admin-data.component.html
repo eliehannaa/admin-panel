@@ -1,0 +1,177 @@
+<div style="height: 100%; background-color: beige">
+  <button (click)="ngOnInit()">Refresh</button>
+  <h1 style="text-align: center; padding: 10px">ToU Admin Panel</h1>
+  <center><mat-spinner *ngIf="isLoading"></mat-spinner></center>
+  <mat-expansion-panel
+    style="background-color: lightblue; border: 1px solid blue; margin: 20px"
+    hideToggle
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title> Pending and Active Orders </mat-panel-title>
+      <mat-panel-description>
+        Click to see Pending and Active Orders
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div
+      *ngIf="pendingOrders.length !== 0"
+      class="mat-elevation-z8"
+      class="table"
+    >
+      <h3 class="table-title">Pending Orders</h3>
+      <table mat-table [dataSource]="pendingOrders">
+        <ng-container
+          *ngFor="let column of pendingOrdersDisplayedColumns"
+          [matColumnDef]="column"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="column !== 'actions'">
+              {{ element[column] }}
+            </div>
+            <div *ngIf="column === 'actions'">
+              <button
+                mat-button
+                style="border: 1px solid black"
+                (click)="acceptNewTraveler(element['_id'])"
+              >
+                {{ "Assign" }}
+              </button>
+              <button
+                mat-button
+                style="border: 1px solid black"
+                (click)="rejectOrder(element['_id'])"
+              >
+                {{ "Reject" }}
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="pendingOrdersDisplayedColumns"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: pendingOrdersDisplayedColumns"
+        ></tr>
+      </table>
+    </div>
+    <div
+      *ngIf="activeOrders.length !== 0"
+      class="mat-elevation-z8"
+      class="table"
+    >
+      <h3 class="table-title">Active Orders</h3>
+      <table mat-table [dataSource]="activeOrders">
+        <ng-container
+          *ngFor="let column of activeOrdersDisplayedColumns"
+          [matColumnDef]="column"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="activeOrdersDisplayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: activeOrdersDisplayedColumns"
+        ></tr>
+      </table>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
+    style="background-color: lightblue; border: 1px solid blue; margin: 20px"
+    hideToggle
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title> Clients </mat-panel-title>
+      <mat-panel-description> Click to see Clients </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div *ngIf="allClients.length !== 0" class="mat-elevation-z8" class="table">
+      <h3 class="table-title">All Clients</h3>
+      <table mat-table [dataSource]="allClients">
+        <ng-container
+          *ngFor="let column of clientsDisplayedColumns"
+          [matColumnDef]="column"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="clientsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: clientsDisplayedColumns"></tr>
+      </table>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
+    style="background-color: lightblue; border: 1px solid blue; margin: 20px"
+    hideToggle
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title> Travelers </mat-panel-title>
+      <mat-panel-description> Click to see Travelers </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div
+      *ngIf="allTravelers.length !== 0"
+      class="mat-elevation-z8"
+      class="table"
+    >
+      <h3 class="table-title">All Travelers</h3>
+      <table mat-table [dataSource]="allTravelers">
+        <ng-container
+          *ngFor="let column of travelersDisplayedColumns"
+          [matColumnDef]="column"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="travelersDisplayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: travelersDisplayedColumns"
+        ></tr>
+      </table>
+    </div>
+
+    <div
+      *ngIf="newTravelers.length !== 0"
+      class="mat-elevation-z8"
+      class="table"
+    >
+      <h3 class="table-title">New Travelers</h3>
+      <table mat-table [dataSource]="newTravelers">
+        <ng-container
+          *ngFor="let column of newTravelersDisplayedColumns"
+          [matColumnDef]="column"
+        >
+          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <ng-container>
+              {{ element[column] }}
+            </ng-container>
+            <ng-container *ngIf="column === 'accept traveler'">
+              <button
+                mat-button
+                style="border: 1px solid black"
+                (click)="acceptNewTraveler(element['_id'])"
+              >
+                {{ "Action" }}
+              </button>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="newTravelersDisplayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: newTravelersDisplayedColumns"
+        ></tr>
+      </table>
+    </div>
+  </mat-expansion-panel>
+</div>
