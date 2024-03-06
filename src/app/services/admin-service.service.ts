@@ -7,6 +7,8 @@ import {
   Order,
   PendingOrdersResponse,
   Product,
+  ProductResponse,
+  WaitingOrdersResponse,
   getClientsResponse,
   getTravelersResponse,
 } from './service-models';
@@ -15,8 +17,8 @@ import {
   providedIn: 'root',
 })
 export class AdminServiceService {
-  // private url = 'http://192.168.1.18:5000';
-  private url = 'http://172.20.64.1:5000';
+  private url = 'http://localhost:5000';
+  // private url = 'http://172.20.64.1:5000';
 
   constructor(private http: HttpClient) {}
 
@@ -32,11 +34,21 @@ export class AdminServiceService {
     );
   }
 
+  getWaitingOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.url + '/admin/waitingorders');
+  }
+
   getAllClients(): Observable<getClientsResponse> {
     return this.http.get<getClientsResponse>(this.url + '/admin/home/clients');
   }
 
   getAllTravelers(): Observable<getTravelersResponse> {
+    return this.http.get<getTravelersResponse>(
+      this.url + '/admin/home/travelers'
+    );
+  }
+
+  getActiveTravelers(): Observable<getTravelersResponse> {
     return this.http.get<getTravelersResponse>(
       this.url + '/admin/home/travelers'
     );
@@ -62,7 +74,19 @@ export class AdminServiceService {
     );
   }
 
-  getProduct(id: string): Observable<Product> {
-    return this.http.get<Product>(this.url + '/admin/products/:id');
+  getProduct(id: string): Observable<ProductResponse> {
+    return this.http.get<ProductResponse>(this.url + '/admin/products/' + id);
+  }
+
+  assignOrder(orderId: string, travelerId: string) {
+    return this.http.post(
+      this.url +
+        '/admin/pendingorders/' +
+        orderId +
+        '/activetravelers/' +
+        travelerId +
+        '/assign',
+      {}
+    );
   }
 }

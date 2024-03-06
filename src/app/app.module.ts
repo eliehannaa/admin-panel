@@ -20,9 +20,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AdminDataComponent } from './components/admin-data/admin-data.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AcceptProductComponent } from './components/accept-product/accept-product.component';
 
 @NgModule({
-  declarations: [AppComponent, LogInComponent, AdminDataComponent],
+  declarations: [
+    AppComponent,
+    LogInComponent,
+    AdminDataComponent,
+    AcceptProductComponent,
+  ],
   imports: [
     CommonModule,
     BrowserModule,

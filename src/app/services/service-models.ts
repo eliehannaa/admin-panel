@@ -19,6 +19,9 @@ export interface Product {
   width: string;
   quantity_ordered: string;
 }
+export interface ProductResponse {
+  prod: Product;
+}
 export interface Order {
   _id: string;
   client: string;
@@ -35,6 +38,9 @@ export interface PendingOrdersResponse {
 }
 export interface ActiveOrdersResponse {
   activeOrders: Order[];
+}
+export interface WaitingOrdersResponse {
+  waitingOrders: Order[];
 }
 export interface Client {
   email: string;

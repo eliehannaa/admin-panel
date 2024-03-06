@@ -18,7 +18,7 @@ export class LogInComponent {
     console.log('clicked login');
     console.log(this.username);
     console.log(this.password);
-    setTimeout(() => this.onLoginHelper(this.username, this.password), 3000);
+    setTimeout(() => this.onLoginHelper(this.username, this.password), 1500);
   }
 
   onLoginHelper(username: string, password: string) {

@@ -16,6 +16,7 @@ import {
 export class AdminDataComponent implements OnInit {
   pendingOrders: Order[] = [];
   activeOrders: Order[] = [];
+  waitingOrders: Order[] = [];
   allClients: Client[] = [];
   allTravelers: Traveler[] = [];
   newTravelers: Traveler[] = [];
@@ -72,6 +73,7 @@ export class AdminDataComponent implements OnInit {
     this.isLoading = true;
     this.getPendingOrders();
     this.getActiveOrders();
+    this.getWaitingOrders();
     this.getAllClients();
     this.getAllTravelers();
     this.getNewTravelers();
@@ -83,8 +85,9 @@ export class AdminDataComponent implements OnInit {
         console.log(data);
         this.pendingOrders = data.pendingOrders;
       },
-      error(err) {
+      error: (err) => {
         console.log('ERROR ' + err);
+        this.isLoading = false;
       },
     });
   }
@@ -94,8 +97,21 @@ export class AdminDataComponent implements OnInit {
         console.log(data);
         this.activeOrders = data.activeOrders;
       },
-      error(err) {
+      error: (err) => {
         console.log('ERROR ' + err);
+        this.isLoading = false;
+      },
+    });
+  }
+  getWaitingOrders() {
+    this.adminService.getWaitingOrders().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.waitingOrders = data;
+      },
+      error: (err) => {
+        console.log('ERROR ' + err);
+        this.isLoading = false;
       },
     });
   }
@@ -105,8 +121,9 @@ export class AdminDataComponent implements OnInit {
         console.log(data);
         this.allClients = data.clients;
       },
-      error(err) {
+      error: (err) => {
         console.log('ERROR ' + err);
+        this.isLoading = false;
       },
     });
   }
@@ -116,8 +133,9 @@ export class AdminDataComponent implements OnInit {
         console.log(data);
         this.allTravelers = data.travelers;
       },
-      error(err) {
+      error: (err) => {
         console.log('ERROR ' + err);
+        this.isLoading = false;
       },
     });
   }
@@ -128,8 +146,9 @@ export class AdminDataComponent implements OnInit {
         this.newTravelers = data.travelers;
         this.isLoading = false;
       },
-      error(err) {
+      error: (err) => {
         console.log('ERROR ' + err);
+        this.isLoading = false;
       },
     });
   }
@@ -143,8 +162,9 @@ export class AdminDataComponent implements OnInit {
         this.ngOnInit();
         alert('traveler accepted');
       },
-      error(err) {
+      error: (err) => {
         console.log('ERROR ' + err);
+        this.isLoading = false;
       },
     });
   }
@@ -158,13 +178,15 @@ export class AdminDataComponent implements OnInit {
         this.ngOnInit();
         alert('order rejected');
       },
-      error(err) {
+      error: (err) => {
         console.log('ERROR ' + err);
+        this.isLoading = false;
       },
     });
   }
 
-  getProduct(id: string) {
-    this.router.navigateByUrl('/accept/' + id);
+  getProduct(id: string, orderId: string) {
+    console.log('id:  ' + id);
+    this.router.navigateByUrl('/accept/' + id + '/' + orderId);
   }
 }
