@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Product Details</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: beige;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Product Details</h2>
+
+    <table *ngIf="product">
+      <tr>
+        <th>ASIN</th>
+        <td>{{ product.asin }}</td>
+      </tr>
+      <tr>
+        <th>Title</th>
+        <td id="title">{{ product.title }}</td>
+      </tr>
+      <tr>
+        <th>ID</th>
+        <td id="_id">{{ product._id }}</td>
+      </tr>
+      <tr>
+        <th>URL</th>
+        <td id="url">
+          <a href="{{ product.url }}" target="_blank">{{ product.url }}</a>
+        </td>
+      </tr>
+      <tr>
+        <th>Price</th>
+        <td id="price">{{ product.price }}</td>
+      </tr>
+      <tr>
+        <th>Dimensions</th>
+        <td id="dimensions">{{ product.dimensions }}</td>
+      </tr>
+      <tr>
+        <th>Weight</th>
+        <td id="weight">{{ product.weight }}</td>
+      </tr>
+      <tr>
+        <th>Height</th>
+        <td id="height">{{ product.height }}</td>
+      </tr>
+      <tr>
+        <th>Width</th>
+        <td id="width">{{ product.width }}</td>
+      </tr>
+      <tr>
+        <th>Quantity Ordered</th>
+        <td id="quantity_ordered">{{ product.quantity_ordered }}</td>
+      </tr>
+    </table>
+  </body>
+</html>

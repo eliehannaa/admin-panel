@@ -26,8 +26,20 @@
           <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let element">
-            <div *ngIf="column !== 'actions'">
-              {{ element[column] }}
+            <div
+              *ngIf="
+                column !== 'actions' &&
+                column !== 'update_status' &&
+                column !== 'mark_sent_out' &&
+                column !== 'item'
+              "
+            >
+              <span *ngIf="column !== 'status'">
+                {{ element[column] }}
+              </span>
+              <span *ngIf="column === 'status'">
+                {{ getStatus(element[column]) }}
+              </span>
             </div>
             <div *ngIf="column === 'actions'">
               <button
@@ -44,6 +56,11 @@
               >
                 {{ "Reject" }}
               </button>
+            </div>
+            <div *ngIf="column === 'item'">
+              <a [routerLink]="['/view/' + element['item']]">
+                {{ element[column] }}
+              </a>
             </div>
           </td>
         </ng-container>
@@ -70,7 +87,47 @@
           [matColumnDef]="column"
         >
           <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
-          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+          <td mat-cell *matCellDef="let element">
+            <div
+              *ngIf="
+                column !== 'update_status' &&
+                column !== 'mark_sent_out' &&
+                column !== 'item'
+              "
+            >
+              <span *ngIf="column !== 'status'">
+                {{ element[column] }}
+              </span>
+              <span *ngIf="column === 'status'">
+                {{ getStatus(element[column]) }}
+              </span>
+            </div>
+            <div *ngIf="column === 'item'">
+              <a [routerLink]="['/view/' + element['item']]">
+                {{ element[column] }}
+              </a>
+            </div>
+            <div *ngIf="column === 'update_status'">
+              <button
+                disabled="{{ element['status'] !== 2 }}"
+                mat-button
+                style="border: 1px solid black"
+                (click)="updateStatus(element['_id'])"
+              >
+                {{ "Update" }}
+              </button>
+            </div>
+            <div *ngIf="column === 'mark_sent_out'">
+              <button
+                [disabled]="element['status'] !== 5"
+                mat-button
+                style="border: 1px solid black"
+                (click)="markassentout(element['_id'])"
+              >
+                {{ "markSentOut" }}
+              </button>
+            </div>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="activeOrdersDisplayedColumns"></tr>
@@ -118,9 +175,18 @@
         <ng-container
           *ngFor="let column of clientsDisplayedColumns"
           [matColumnDef]="column"
-        >
-          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
-          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+          ><ng-container *ngIf="!column.endsWith('orders')">
+            <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element[column] }}
+            </td></ng-container
+          >
+          <ng-container *ngIf="column.endsWith('orders')">
+            <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element[column].length }}
+            </td>
+          </ng-container>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="clientsDisplayedColumns"></tr>
@@ -148,8 +214,16 @@
           *ngFor="let column of travelersDisplayedColumns"
           [matColumnDef]="column"
         >
-          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
-          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+          <ng-container *ngIf="!column.endsWith('orders')">
+            <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+            <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+          </ng-container>
+          <ng-container *ngIf="column.endsWith('orders')">
+            <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element[column].length }}
+            </td>
+          </ng-container>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="travelersDisplayedColumns"></tr>
@@ -192,6 +266,37 @@
         <tr
           mat-row
           *matRowDef="let row; columns: newTravelersDisplayedColumns"
+        ></tr>
+      </table>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
+    style="background-color: lightblue; border: 1px solid blue; margin: 20px"
+    hideToggle
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title> Feedbacks </mat-panel-title>
+      <mat-panel-description> Click to see Feedbacks </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div *ngIf="feedback.length !== 0" class="mat-elevation-z8" class="table">
+      <h3 class="table-title">All Feedbacks</h3>
+      <table mat-table [dataSource]="feedback">
+        <ng-container
+          *ngFor="let column of feedbackDisplayedColumns"
+          [matColumnDef]="column"
+          ><ng-container>
+            <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element[column] }}
+            </td></ng-container
+          >
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="feedbackDisplayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: feedbackDisplayedColumns"
         ></tr>
       </table>
     </div>

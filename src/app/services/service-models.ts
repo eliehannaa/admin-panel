@@ -43,6 +43,7 @@ export interface WaitingOrdersResponse {
   waitingOrders: Order[];
 }
 export interface Client {
+  _id: string;
   email: string;
   password: string;
   name: string;
@@ -86,4 +87,18 @@ export interface Traveler {
 }
 export interface getTravelersResponse {
   travelers: Traveler[];
+}
+
+export interface Review {
+  _id: string;
+  order: string;
+  message: string;
+  rating: number;
+  arrived_on_time: boolean;
+  as_described: boolean;
+  good_service: boolean;
+}
+
+export interface testimonials {
+  testimonials: Review[];
 }

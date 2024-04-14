@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { AdminDataComponent } from './components/admin-data/admin-data.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AcceptProductComponent } from './components/accept-product/accept-product.component';
+import { ViewProductComponent } from './components/view-product/view-product.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AcceptProductComponent } from './components/accept-product/accept-produ
     LogInComponent,
     AdminDataComponent,
     AcceptProductComponent,
+    ViewProductComponent,
   ],
   imports: [
     CommonModule,

@@ -8,9 +8,11 @@ import {
   PendingOrdersResponse,
   Product,
   ProductResponse,
+  Review,
   WaitingOrdersResponse,
   getClientsResponse,
   getTravelersResponse,
+  testimonials,
 } from './service-models';
 
 @Injectable({
@@ -88,5 +90,27 @@ export class AdminServiceService {
         '/assign',
       {}
     );
+  }
+
+  updateStatus(orderId: string) {
+    return this.http.post(
+      this.url + '/admin/activeorders/' + orderId + '/updatestatus',
+      {}
+    );
+  }
+
+  markassentout(orderId: string) {
+    return this.http.post(
+      this.url + '/admin/home/activeorders/' + orderId + '/markassentout',
+      {}
+    );
+  }
+
+  getProductById(id: string): Observable<Product> {
+    return this.http.get<Product>(this.url + '/admin/products/' + id);
+  }
+
+  getFeedbacks(): Observable<testimonials> {
+    return this.http.get<testimonials>(this.url + '/testimonials');
   }
 }
